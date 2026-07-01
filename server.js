@@ -16,6 +16,8 @@ app.use(express.json({ limit: "1mb" }));
 
 // --- Seguridad CORS: solo tus dominios pueden usar este backend ---
 const DOMINIOS_PERMITIDOS = [
+  "https://meistia.com",
+  "https://www.meistia.com",
   "https://suelosmeister.com",
   "https://www.suelosmeister.com",
   "https://suelia.com",
