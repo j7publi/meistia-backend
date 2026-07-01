@@ -95,6 +95,24 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", servicio: "MEISTIA backend", modelo: MODELO });
 });
 
+// --- Recepción de leads (se envían a info@suelosmeister.com) ---
+// Para envío automático por email hace falta configurar un servicio SMTP/Resend
+// y añadir aquí la llamada de envío. De momento registra el lead en el log de Render.
+const EMAIL_DESTINO = "info@suelosmeister.com";
+app.post("/api/lead", async (req, res) => {
+  try {
+    const lead = req.body || {};
+    console.log("NUEVO LEAD MEISTIA →", EMAIL_DESTINO, JSON.stringify(lead));
+    // TODO: cuando configures Resend/SMTP, enviar el email aquí a EMAIL_DESTINO.
+    // Por ahora respondemos que NO se envió automáticamente, para que la web
+    // ofrezca al cliente el enlace de correo de respaldo y el lead no se pierda.
+    res.status(202).json({ recibido: true, emailAutomatico: false });
+  } catch (err) {
+    console.error("Error en /api/lead:", err);
+    res.status(500).json({ error: "Error interno" });
+  }
+});
+
 const PUERTO = process.env.PORT || 3000;
 app.listen(PUERTO, () => {
   console.log(`MEISTIA backend escuchando en el puerto ${PUERTO}`);
